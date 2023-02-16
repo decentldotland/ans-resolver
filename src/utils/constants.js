@@ -1,0 +1,1 @@
+export const ANS_CONTRACT_ADDRESS = `iC9Ox__jEczug--NTY_bMQ683XTW27JijYt7APVLsQM`;

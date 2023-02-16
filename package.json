@@ -1,0 +1,31 @@
+{
+  "name": "ans-resolver",
+  "version": "0.0.1",
+  "description": "HTTP resolver for ANS domains",
+  "main": "./src/api.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/api.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/decentldotland/ans-resolver.git"
+  },
+  "keywords": [
+    "ans",
+    "arweave",
+    "domains",
+    "resolver"
+  ],
+  "author": "charmful0x",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/decentldotland/ans-resolver/issues"
+  },
+  "homepage": "https://github.com/decentldotland/ans-resolver#readme",
+  "dependencies": {
+    "axios": "^1.3.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
