@@ -6,5 +6,12 @@
   <p align="center"> (reverse)resolver for ANS domains</p>
 </p>
 
+## Methods
+
+### 1- `/resolve/:query`
+
+- `query` : a valid Arweave address or ANS domain
+
+
 ## License
 This project is licensed under the [MIT License](./LICENSE)
