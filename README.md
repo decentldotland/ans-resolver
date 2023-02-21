@@ -8,9 +8,10 @@
 
 ## Methods
 
-### 1- `/resolve/:query`
+### 1- `/resolve/:query/:full?`
 
 - `query` : a valid Arweave address or ANS domain
+- `full` (optional): return response as the full ANS user object
 
 
 ## License
