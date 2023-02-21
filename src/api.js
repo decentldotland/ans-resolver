@@ -13,16 +13,21 @@ app.use(
   })
 );
 
-app.get("/resolve/:query", async (req, res) => {
+app.get("/resolve/:query/:full?", async (req, res) => {
   try {
     res.setHeader("Content-Type", "application/json");
-    const { query } = req.params;
+    const { query, full } = req.params;
     const balances = await readContract();
     if (isArweaveAddress(query)) {
       const user = balances.find((usr) => usr.address === query);
       const domain = user?.primary_domain
         ? `${user.primary_domain}.ar`
         : undefined;
+
+      if (full) {
+        res.send(user);
+        return;
+      }
       res.send({
         domain,
       });
@@ -33,6 +38,10 @@ app.get("/resolve/:query", async (req, res) => {
       (usr) => usr.primary_domain === normalizedDomain
     );
     const address = user?.address ? user.address : undefined;
+    if (full) {
+      res.send(user);
+      return;
+    }
     res.send({ address });
     return;
   } catch (error) {
