@@ -1,7 +1,11 @@
 import express from "express";
 import cors from "cors";
 import { readContract } from "./utils/readContract.js";
-import { isArweaveAddress, normalizeDomain } from "./utils/validations.js";
+import {
+  isArweaveAddress,
+  normalizeDomain,
+  arPageUser,
+} from "./utils/validations.js";
 
 const app = express();
 
@@ -91,6 +95,39 @@ app.get("/resolve-subdomain/:parent_domain/:query", async (req, res) => {
     res.send({
       error:
         "invalid query paramater. Provide a valid ANS subdomain or Arweave address",
+    });
+    return;
+  }
+});
+
+app.get("/resolve-as-arpage/:query", async (req, res) => {
+  try {
+    res.setHeader("Content-Type", "application/json");
+    const { query } = req.params;
+    const balances = await readContract();
+    if (isArweaveAddress(query)) {
+      const user = balances.find((usr) => usr.address === query);
+      const domain = user?.primary_domain
+        ? `${user.primary_domain}.ar`
+        : undefined;
+      res.send(await arPageUser(user));
+      return;
+    }
+    const normalizedDomain = normalizeDomain(query);
+    const user = balances.find(
+      (usr) => usr.primary_domain === normalizedDomain
+    );
+    const address = user?.address ? user.address : undefined;
+
+    res.send(await arPageUser(user));
+    return;
+
+    return;
+  } catch (error) {
+    console.log(error);
+    res.send({
+      error:
+        "invalid query paramater. Provide a valid ANS domain or Arweave address",
     });
     return;
   }
