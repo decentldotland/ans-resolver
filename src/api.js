@@ -54,6 +54,48 @@ app.get("/resolve/:query/:full?", async (req, res) => {
   }
 });
 
+app.get("/resolve-subdomain/:parent_domain/:query", async (req, res) => {
+  try {
+    res.setHeader("Content-Type", "application/json");
+    const { query, parent_domain } = req.params;
+    const normalizedDomain = normalizeDomain(parent_domain);
+    const balances = await readContract();
+    const domains = balances
+      .map((usr) => usr.ownedDomains)
+      .flat()
+      .filter((domain) => domain.subdomains.length);
+    const parent = domains.find((domain) => domain.domain === normalizedDomain);
+
+    const subdomains = parent.subdomains.filter((subdomain) => subdomain.owner);
+
+    if (isArweaveAddress(query)) {
+      const user = subdomains.find((sub) => sub.owner === query);
+      const subdomain = user?.subdomain
+        ? `${normalizedDomain}.${user.subdomain}.ar`
+        : undefined;
+      res.send({
+        subdomain,
+      });
+      return;
+    }
+    const normalizedSubdomain = normalizeDomain(query);
+    const user = subdomains.find(
+      (sub) => sub.subdomain === normalizedSubdomain
+    );
+    const address = user?.owner ? user.owner : undefined;
+
+    res.send({ address });
+    return;
+  } catch (error) {
+    console.log(error);
+    res.send({
+      error:
+        "invalid query paramater. Provide a valid ANS subdomain or Arweave address",
+    });
+    return;
+  }
+});
+
 app.listen(port, async () => {
   console.log(`listening at PORT: ${port}`);
 });
