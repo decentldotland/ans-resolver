@@ -18,6 +18,9 @@
 - `parent_domain` : a valid ANS domain that issued subdomains.
 - `query` : a valid Arweave address or ANS subdomain (target).
 
+### 3- `/find-user/:domain`
+
+- `domain` : a valid ANS domain (primary or owned)
 
 ## License
 This project is licensed under the [MIT License](./LICENSE)
