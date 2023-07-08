@@ -1,6 +1,6 @@
 {
   "name": "ans-resolver",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "HTTP resolver for ANS domains",
   "main": "./src/api.js",
   "type": "module",
