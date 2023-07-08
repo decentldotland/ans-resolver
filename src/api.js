@@ -133,6 +133,29 @@ app.get("/resolve-as-arpage/:query", async (req, res) => {
   }
 });
 
+app.get("/find-user/:domain", async (req, res) => {
+  try {
+    res.setHeader("Content-Type", "application/json");
+    const { domain } = req.params;
+    const balances = await readContract();
+
+    const normalizedDomain = normalizeDomain(domain);
+    const user = balances.find(
+      (usr) => usr.ownedDomains.map((ans) => ans["domain"]).includes(domain)
+    );
+
+    res.send(user);
+    return;
+  } catch (error) {
+    console.log(error);
+    res.send({
+      error:
+        "invalid query paramater. Provide a valid ANS domain",
+    });
+    return;
+  }
+});
+
 app.listen(port, async () => {
   console.log(`listening at PORT: ${port}`);
 });
